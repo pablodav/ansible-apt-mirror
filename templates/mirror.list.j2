@@ -18,4 +18,14 @@ set _tilde {{ apt_mirror_tilde }}
 {{ repo }}
 {% endfor  %}
 
-clean http://archive.ubuntu.com/ubuntu
+{% for repo in apt_mirror_ppa_repo %}
+{{ repo }}
+{% endfor  %}
+
+{% for repo in apt_mirror_external %}
+{{ repo }}
+{% endfor  %}
+
+{% for repo in clean_repo %}
+clean {{ repo }}
+{% endfor  %}

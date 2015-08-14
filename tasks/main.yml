@@ -1,15 +1,35 @@
 ---
 
-- name: main | Install apt-mirror
-  apt:
-     name=apt-mirror
+- name: main | Install packages
+  apt: name={{item}} state=installed
+  with_items:
+  - apache2
+  - apt-mirror
+  tags:
+    - packages
 
 - name: main | Setup base path
   file:
      path="{{ apt_mirror_base_path }}"
      recurse=yes
      state="directory"
-     owner=root
+     owner="root"
+     group="www-data"
+     mode=655
+
+ # first ensure our target directory exists
+- file:
+     path="{{ apt_mirror_html_dir}}/keys"
+     state="directory"
+     owner="www-data"
+     group="www-data"
+     mode=655
+
+
+# copy each pub key
+- copy: src={{ item }} dest="{{ apt_mirror_html_dir}}/keys" owner=www-data mode=655
+      with_fileglob:
+        - ../files/keys/*
 
 - name: main | Configure apt-mirror
   template:
@@ -20,9 +40,22 @@
 
 - name: main | Cron job
   cron:
-    name="APT Mirror"
-    day="{{ apt_mirror_cron_day }}"
-    hour="{{ apt_mirror_cron_hour }}"
     job="{{ apt_mirror_bin_path }}"
+    name="APT Mirror"
+    user='root'
+    cron_file="ansible_apt_mirror"
+    weekday="{{ apt_mirror_cron_day }}"
+    hour="{{ apt_mirror_cron_hour }}"
+    minute='0'
   when: apt_mirror_cron
 
+
+- name: link scripts to bin path
+  command: 'ln -sf {{ item.src }} {{ item.dest }}'
+  with_items:
+    - { src: '{{ apt_mirror_base_path }}/mirror/', dest: '{{ apt_mirror_html_dir }}/mirrors' }
+    - { src: '{{ apt_mirror_base_path }}/mirror/ppa.launchpad.net/', dest: '{{ apt_mirror_html_dir }}/ppa' }
+    - { src: '{{ apt_mirror_base_path }}/mirror/arhive.ubuntu.com/ubuntu', dest: '{{ apt_mirror_html_dir }}/ubuntu' }
+
+  tags:
+    - scripts
