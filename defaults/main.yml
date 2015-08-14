@@ -2,23 +2,54 @@
 
 # Check closest mirror "least latency"
 # https://launchpad.net/ubuntu/+archivemirrors
+# More help added from https://github.com/pablodav/linux-general-doc-wiki/wiki/apt-mirror
 
 apt_mirror_bin_path                     : "/usr/bin/apt-mirror"
 # Cron setup
 apt_mirror_cron                         : True
 apt_mirror_cron_day                     : "*"
-apt_mirror_cron_hour                    : "23/*"
+apt_mirror_cron_hour                    : "23"
 
 # apt_mirror
-apt_mirror_base_path                    : "/mnt/apt-mirror"
+apt_mirror_base_path                    : "/var/spool/apt-mirror"
 apt_mirror_nthreads                     : 20
 apt_mirror_tilde                        : 0
 
+# html dir
+apt_mirror_html_dir                     : "/var/www/html"
+
+# delete [arch=amd64,i386] if you want to sync all architectures!
 apt_mirror_repo                         :
-  - "deb http://archive.ubuntu.com/ubuntu precise main restricted universe multiverse"
-  - "deb http://archive.ubuntu.com/ubuntu precise main restricted universe multiverse"
-  - "deb http://archive.ubuntu.com/ubuntu precise-security main restricted universe multiverse"
-  - "deb http://archive.ubuntu.com/ubuntu precise-updates main restricted universe multiverse"
-  - "deb-src http://archive.ubuntu.com/ubuntu precise main restricted universe multiverse"
-  - "deb-src http://archive.ubuntu.com/ubuntu precise-security main restricted universe multiverse"
-  - "deb-src http://archive.ubuntu.com/ubuntu precise-updates main restricted universe multiverse"
+  - "deb [arch=amd64,i386] http://archive.ubuntu.com/ubuntu trusty main restricted universe multiverse"
+  - "deb [arch=amd64,i386] http://archive.ubuntu.com/ubuntu trusty-security main restricted universe multiverse"
+  - "deb [arch=amd64,i386] http://archive.ubuntu.com/ubuntu trusty-updates main restricted universe multiverse"
+
+apt_mirror_ppa_repo:
+  - "deb http://ppa.launchpad.net/hugo-vanduijn/burp-latest/ubuntu trusty main"
+  - "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main"
+  - "deb http://ppa.launchpad.net/ondrej/redmine/ubuntu trusty main"
+
+apt_mirror_external:
+  - "deb http://www.nmon.net/apt/14.04/ x64/"
+  - "deb http://www.nmon.net/apt/14.04/ all/"
+  - "deb http://deb.theforeman.org/ trusty 1.7"
+  - "deb http://deb.theforeman.org/ plugins 1.7"
+  - "deb http://apt.puppetlabs.com/ trusty main dependencies"
+  - "deb http://www.ubnt.com/downloads/unifi/distros/deb/ubuntu ubuntu ubiquiti"
+  - "deb https://packages.gitlab.com/gitlab/gitlab-ce/ubuntu/ trusty main"
+
+#  - "deb-src http://archive.ubuntu.com/ubuntu trusty main restricted universe multiverse"
+#  - "deb-src http://archive.ubuntu.com/ubuntu trusty-security main restricted universe multiverse"
+#  - "deb-src http://archive.ubuntu.com/ubuntu trusty-updates main restricted universe multiverse"
+
+clean_repo:
+  - "http://archive.ubuntu.com"
+  - "http://www.ubnt.com/downloads/unifi/distros/deb/ubuntu"
+  - "http://ppa.launchpad.net/hugo-vanduijn/burp-latest/ubuntu"
+  - "http://deb.theforeman.org"
+  - "http://apt.puppetlabs.com"
+  - "http://ppa.launchpad.net/ansible/ansible/ubuntu"
+  - "http://www.nmon.net/apt/14.04"
+  - "http://www.nmon.net/apt/14.04"
+  - "https://packages.gitlab.com/gitlab/gitlab-ce/ubuntu"
+  - "http://ppa.launchpad.net/ondrej/redmine/ubuntu"
