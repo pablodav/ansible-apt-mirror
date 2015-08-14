@@ -18,11 +18,15 @@ apt_mirror_tilde                        : 0
 # html dir
 apt_mirror_html_dir                     : "/var/www/html"
 
-# delete [arch=amd64,i386] if you want to sync all architectures!
+# the mirror.list.j2 template has default arch set to amd64,
+# so not specificed deb-arch will sync only amd64
 apt_mirror_repo                         :
-  - "deb [arch=amd64,i386] http://archive.ubuntu.com/ubuntu trusty main restricted universe multiverse"
-  - "deb [arch=amd64,i386] http://archive.ubuntu.com/ubuntu trusty-security main restricted universe multiverse"
-  - "deb [arch=amd64,i386] http://archive.ubuntu.com/ubuntu trusty-updates main restricted universe multiverse"
+  - "deb http://archive.ubuntu.com/ubuntu trusty main restricted universe multiverse"
+  - "deb http://archive.ubuntu.com/ubuntu trusty-security main restricted universe multiverse"
+  - "deb http://archive.ubuntu.com/ubuntu trusty-updates main restricted universe multiverse"
+  - "deb-i386 http://archive.ubuntu.com/ubuntu trusty main restricted universe multiverse"
+  - "deb-i386 http://archive.ubuntu.com/ubuntu trusty-security main restricted universe multiverse"
+  - "deb-i386 http://archive.ubuntu.com/ubuntu trusty-updates main restricted universe multiverse"
 
 apt_mirror_ppa_repo:
   - "deb http://ppa.launchpad.net/hugo-vanduijn/burp-latest/ubuntu trusty main"
